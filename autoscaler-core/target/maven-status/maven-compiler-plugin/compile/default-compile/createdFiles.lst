@@ -1,0 +1,5 @@
+com/autoscaler/DecisionEngine.class
+com/autoscaler/Config.class
+com/autoscaler/Autoscaler.class
+com/autoscaler/DockerServiceManager.class
+com/autoscaler/MetricsFetcher.class

@@ -1,0 +1,15 @@
+how to use docker swarm
+how to use docker
+how to use docker compose
+what is auto scaling?
+why do we need to auto scale
+what is vertical scaling
+what is horizontal scaling
+what is the difference between horizontal and vertical scaling
+what is promethius
+what is cadvisor 
+how to create a dockerfile (uske andar ka samaan)
+what is containerization
+why do we generally containerize applications
+why not use serverless functions instead of autoscaling a monolith
+

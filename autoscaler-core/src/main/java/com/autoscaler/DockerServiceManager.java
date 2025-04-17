@@ -10,15 +10,25 @@ public class DockerServiceManager {
 
     public static int getReplicas(String serviceName) {
         try {
-            Process process = Runtime.getRuntime().exec("docker service ls | grep " + serviceName + " | awk '{print $4}' | cut -d '/' -f1");
+            ProcessBuilder pb = new ProcessBuilder("bash", "-c",
+                "docker service inspect --format='{{.Spec.Mode.Replicated.Replicas}}' " + serviceName);
+            Process process = pb.start();
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String output = reader.readLine();
-            return (output != null) ? Integer.parseInt(output.trim()) : 1;
+            if (output != null) {
+                LOGGER.info("Service replicas: " + output);
+                return Integer.parseInt(output.trim());
+            } else {
+                LOGGER.warning("No output from service inspect.");
+                return 100;
+            }
         } catch (IOException | NumberFormatException e) {
             LOGGER.severe("Error fetching service replicas: " + e.getMessage());
-            return 1;
+            return 100;
         }
     }
+    
+    
 
     public static void scaleService(String serviceName, int replicas) {
         try {

@@ -1,32 +1,29 @@
 package com.dashboard.controller;
 
 import com.dashboard.service.DockerScalerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "*") // Allow access from frontend
+@CrossOrigin(origins = "*") 
 public class DashboardController {
 
-    private final DockerScalerService scalerService;
-
-    public DashboardController(DockerScalerService scalerService) {
-        this.scalerService = scalerService;
-    }
+    @Autowired
+    private DockerScalerService dockerScalerService;
 
     @GetMapping("/cpu-usage")
     public double getCpuUsage() {
-        return scalerService.fetchCpuUsage();
+        return dockerScalerService.fetchCpuUsage();
     }
 
-    @PostMapping("/manual-scale")
-    public String manualScale(@RequestParam int replicas) {
-        scalerService.scaleManually(replicas);
-        return "Scaling triggered to " + replicas + " replicas.";
+    @GetMapping("/replicas")
+    public int getReplicas() {
+        return dockerScalerService.getCurrentReplicas();
     }
 
-    @GetMapping("/manual-replicas")
-    public int getManualReplicas() {
-        return scalerService.getCurrentReplicas();
+    @PostMapping("/evaluate-scaling")
+    public void triggerAutoScaling() {
+        dockerScalerService.evaluateAutoScaling();
     }
 }
